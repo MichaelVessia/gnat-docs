@@ -21,9 +21,7 @@
 \usepackage[bookmarks=true]{hyperref}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
-\hypersetup{
-  bookmarks=false,    % show bookmarks bar?
-  pdftitle={Software Requirement Specification},    % title
+\hypersetup{ bookmarks=false,    % show bookmarks bar?  pdftitle={Software Requirement Specification},    % title
   pdfauthor={Michael Vessia Jr.},                     % author
   pdfsubject={Requirements for GNAT},                        % subject of the document
   pdfkeywords={Networks, Testing, GNAT}, % list of keywords
@@ -82,7 +80,7 @@
 
 \section{Purpose}
 
-GNAT is a Android application which helps IT departments, network administrators, or anyone that wants to monitor a network that they have access to. The application should be free to download on the Google Play store, and the application will be open source. General Network Access Tester is an Android application which tests network accessibility.  The application provides information that will make it easier for someone to troubleshoot their network.  The General Network Access Tester  reduces the workload on IT departments by allowing them to troubleshoot more quickly.
+General Network Access Tester is an Android application which helps IT departments, network administrators, or anyone that wants to monitor a network that they have access to. The application should be free to download on the Google Play store, and the application will be open source. General Network Access Tester is an Android application which tests network accessibility.  The application provides information that will make it easier for someone to troubleshoot their network.  The General Network Access Tester  reduces the workload on IT departments by allowing them to troubleshoot more quickly.
 
 This document is meant to give an overview of the features of the General Network Access Tester, making the process of using the application for one's own network simple, and making contributing to the project easy and painless.
 
@@ -109,13 +107,19 @@ GNAT is targetting network administrators who have a considerable amount of mobi
 
 \section{Product Functions}
 
-Within the mobile application, users will be able to enter a number of configuration options.  The network connection that will be attempted will be based upon these configuration options.  The result of this connection attempt will be logged if anything goes wrong. An administrator will be allowed to create a web page, likely containing some kind of file.  The app will attempt to connect to this web page.  The file will give the administrator some flexibility. GNAT can simply check if it was able to be downloaded, or it can be a script that does something else.  This is up to the administrator.
+Within the mobile application, users will be able to enter a number of configuration options.  The network connection that will be attempted will be based upon these configuration options.  The result of this connection attempt will be logged if anything goes wrong. Although the application tests network access, it ultimately assumes that the user has access to the internet.  If there is an initial connection error, logs will be stored locally until a connection is made, at which point it will send the logs via the specified means of communication.
 
+The application needs both internet and GPS connection to generate the desired logs and send them to the specified location.  The GPS will allow the logs to contain relevant geographical information, like where the device was when it attempted to connect from.
+
+An administrator will be allowed to create a web page, likely containing some kind of file.  The app will attempt to connect to this web page.  The file will give the administrator some flexibility. GNAT can simply check if the file was able to be downloaded, or it can be a script that does something else.  
+
+If the administrator uses a dashboard service that has an API, GNAT will be able to send the logs via the API to be viewed in the dashboard service.
+ 
 \section{User Classes and Characteristics}
 The user of the application is expected to either be the administrator, or be a knowledgeable user that recieved the relevant information from the administator.  End users of the network should not have to interact with GNAT, but assuming they had the relevant information nothing would be stopping them.
 
 \section{Operating Environment}
-GNAT will run on the Android operating system.  The application will require the user to have at least Android 4.0.3 (Ice Cream Sandwich).
+GNAT will run on the Android operating system.  The application will require the user to have at least Android 4.0.3 (Ice Cream Sandwich). It also assumes there is a network to be tested.
 
 \section{Design and Implementation Constraints}
 $<$Describe any items or issues that will limit the options available to the 
@@ -208,12 +212,6 @@ associated with use cases.$>$
 \subsection{Functional Requirements}
 
 Temporary info to be revised: 
-
-Users can provide their network information using the application's interface.  This information will serve as configuration settings for the network that it will attempt to connect to. The user will also configure where they want their logs sent, and through what means. Some options may be through email or through an API provided by a service like Zenoss.  Although the application tests network access, it ultimately assumes that the user has access to the specified network.  If there is an initial connection error, logs will be stored locally until a connection is made, at which point it will send the logs via the specified means of communication.
-
-The application needs both internet and GPS connection to generate the desired logs and send them to the specified location.  The GPS will allow the logs to contain relevant geographical information, like where the device was when it attempted to connect, which allows the administrator to make a good guess as to which access point the user is connected to.
-
-The administrator will be able to set up a web address on their network that the application will attempt to connect to.  If the connection is unsuccessful, a log will be generated.  If it is successful, GNAT will download the file found on the web address.
 
 
 $<$Each requirement should be uniquely identified with a sequence number or a 
