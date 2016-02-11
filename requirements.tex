@@ -1,0 +1,300 @@
+%Copyright 2014 Jean-Philippe Eisenbarth
+%This program is free software: you can 
+%redistribute it and/or modify it under the terms of the GNU General Public 
+%License as published by the Free Software Foundation, either version 3 of the 
+%License, or (at your option) any later version.
+%This program is distributed in the hope that it will be useful,but WITHOUT ANY 
+%WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+%PARTICULAR PURPOSE. See the GNU General Public License for more details.
+%You should have received a copy of the GNU General Public License along with 
+%this program.  If not, see <http://www.gnu.org/licenses/>.
+
+%Based on the code of Yiannis Lazarides
+%http://tex.stackexchange.com/questions/42602/software-requirements-specification-with-latex
+%http://tex.stackexchange.com/users/963/yiannis-lazarides
+%Also based on the template of Karl E. Wiegers
+%http://www.se.rit.edu/~emad/teaching/slides/srs_template_sep14.pdf
+%http://karlwiegers.com
+\documentclass{scrreprt}
+\usepackage{listings}
+\usepackage{underscore}
+\usepackage[bookmarks=true]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\hypersetup{
+  bookmarks=false,    % show bookmarks bar?
+  pdftitle={Software Requirement Specification},    % title
+  pdfauthor={Michael Vessia Jr.},                     % author
+  pdfsubject={Requirements for GNAT},                        % subject of the document
+  pdfkeywords={Networks, Testing, GNAT}, % list of keywords
+  colorlinks=true,       % false: boxed links; true: colored links
+  linkcolor=blue,       % color of internal links
+  citecolor=black,       % color of links to bibliography
+  filecolor=black,        % color of file links
+  urlcolor=purple,        % color of external links
+  linktoc=page            % only page is linked
+}%
+\def\myversion{1.0 }
+\def\sourcecode{https://github.com/MichaelVessia/gnat}
+\def\author{Michael Vessia Jr.}
+\date{}
+%\title{%
+
+%}
+\usepackage{hyperref}
+\begin{document}
+
+\begin{flushright}
+  \rule{16cm}{5pt}\vskip1cm
+  \begin{bfseries}
+    \Huge{SOFTWARE REQUIREMENTS\\ SPECIFICATION}\\
+    \vspace{1.9cm}
+    for\\
+    \vspace{1.9cm}
+    General Network Access Tester\\
+    \vspace{1.9cm}
+    \LARGE{Version \myversion}\\
+    \vspace{1.9cm}
+    Prepared by \author\\
+    \vspace{1.9cm}
+    \today\\
+  \end{bfseries}
+\end{flushright}
+
+\tableofcontents
+
+
+\chapter*{Revision History}
+
+\begin{center}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    Name & Date & Reason For Changes & Version\\
+    \hline
+    21 & 22 & 23 & 24\\
+    \hline
+    31 & 32 & 33 & 34\\
+    \hline
+  \end{tabular}
+\end{center}
+
+\chapter{Introduction}
+
+\section{Purpose}
+
+GNAT is a Android application which helps IT departments, network administrators, or anyone that wants to monitor a network that they have access to. The application should be free to download on the Google Play store, and the application will be open source. General Network Access Tester is an Android application which tests network accessibility.  The application provides information that will make it easier for someone to troubleshoot their network.  The General Network Access Tester  reduces the workload on IT departments by allowing them to troubleshoot more quickly.
+
+This document is meant to give an overview of the features of the General Network Access Tester, making the process of using the application for one's own network simple, and making contributing to the project easy and painless.
+
+\section{Document Conventions}
+The General Network Access Tester will hereafter be referred to as GNAT. Users will be someone that interacts with the mobile application.  An administrator will be the person who owns the network and is likely having the logs sent to them.  The administrator can and likely will also be the user.
+
+\section{Intended Audience and Reading Suggestions}
+This document is meant for administrators who would like to have their network monitored by GNAT, or developers who would like to make contributions to GNAT. It is not required that users read this document, but if they would like further clarification about the settings they they are configuring within the application, they will find that information in this document.  Developers will be interested in the source code. As of version \myversion, the source code can be found at \sourcecode.
+
+\section{Project Scope}
+
+None as of version \myversion.
+
+\section{References}
+
+None as of version \myversion.
+
+\chapter{Overall Description}
+
+\section{Product Perspective}
+
+GNAT is targetting network administrators who have a considerable amount of mobile devices connecting to their network, and would like more information about failed connections.  GNAT should integrate well into an existing monitoring/dashboard system, but ultimately should be a stand-alone application and not depend on any other software.
+
+
+\section{Product Functions}
+
+Within the mobile application, users will be able to enter a number of configuration options.  The network connection that will be attempted will be based upon these configuration options.  The result of this connection attempt will be logged if anything goes wrong. An administrator will be allowed to create a web page, likely containing some kind of file.  The app will attempt to connect to this web page.  The file will give the administrator some flexibility. GNAT can simply check if it was able to be downloaded, or it can be a script that does something else.  This is up to the administrator.
+
+\section{User Classes and Characteristics}
+The user of the application is expected to either be the administrator, or be a knowledgeable user that recieved the relevant information from the administator.  End users of the network should not have to interact with GNAT, but assuming they had the relevant information nothing would be stopping them.
+
+\section{Operating Environment}
+GNAT will run on the Android operating system.  The application will require the user to have at least Android 4.0.3 (Ice Cream Sandwich).
+
+\section{Design and Implementation Constraints}
+$<$Describe any items or issues that will limit the options available to the 
+developers. These might include: corporate or regulatory policies; hardware 
+limitations (timing requirements, memory requirements); interfaces to other 
+applications; specific technologies, tools, and databases to be used; parallel 
+operations; language requirements; communications protocols; security 
+considerations; design conventions or programming standards (for example, if the 
+customer’s organization will be responsible for maintaining the delivered 
+software).$>$
+
+\section{User Documentation}
+$<$List the user documentation components (such as user manuals, on-line help, 
+and tutorials) that will be delivered along with the software. Identify any 
+known user documentation delivery formats or standards.$>$
+\section{Assumptions and Dependencies}
+
+$<$List any assumed factors (as opposed to known facts) that could affect the 
+requirements stated in the SRS. These could include third-party or commercial 
+components that you plan to use, issues around the development or operating 
+environment, or constraints. The project could be affected if these assumptions 
+are incorrect, are not shared, or change. Also identify any dependencies the 
+project has on external factors, such as software components that you intend to 
+reuse from another project, unless they are already documented elsewhere (for 
+example, in the vision and scope document or the project plan).$>$
+
+
+\chapter{External Interface Requirements}
+
+\section{User Interfaces}
+$<$Describe the logical characteristics of each interface between the software 
+product and the users. This may include sample screen images, any GUI standards 
+or product family style guides that are to be followed, screen layout 
+constraints, standard buttons and functions (e.g., help) that will appear on 
+every screen, keyboard shortcuts, error message display standards, and so on.  
+Define the software components for which a user interface is needed. Details of 
+the user interface design should be documented in a separate user interface 
+specification.$>$
+
+\section{Hardware Interfaces}
+$<$Describe the logical and physical characteristics of each interface between 
+the software product and the hardware components of the system. This may include 
+the supported device types, the nature of the data and control interactions 
+between the software and the hardware, and communication protocols to be 
+used.$>$
+
+\section{Software Interfaces}
+$<$Describe the connections between this product and other specific software 
+components (name and version), including databases, operating systems, tools, 
+libraries, and integrated commercial components. Identify the data items or 
+messages coming into the system and going out and describe the purpose of each.  
+Describe the services needed and the nature of communications. Refer to 
+documents that describe detailed application programming interface protocols.  
+Identify data that will be shared across software components. If the data 
+sharing mechanism must be implemented in a specific way (for example, use of a 
+global data area in a multitasking operating system), specify this as an 
+implementation constraint.$>$
+
+\section{Communications Interfaces}
+$<$Describe the requirements associated with any communications functions 
+required by this product, including e-mail, web browser, network server 
+communications protocols, electronic forms, and so on. Define any pertinent 
+message formatting. Identify any communication standards that will be used, such 
+as FTP or HTTP. Specify any communication security or encryption issues, data 
+transfer rates, and synchronization mechanisms.$>$
+
+
+\chapter{System Features}
+$<$This template illustrates organizing the functional requirements for the 
+product by system features, the major services provided by the product. You may 
+prefer to organize this section by use case, mode of operation, user class, 
+object class, functional hierarchy, or combinations of these, whatever makes the 
+most logical sense for your product.$>$
+
+\section{System Feature 1}
+$<$Don’t really say “System Feature 1.” State the feature name in just a few 
+words.$>$
+
+\subsection{Description and Priority}
+$<$Provide a short description of the feature and indicate whether it is of 
+High, Medium, or Low priority. You could also include specific priority 
+component ratings, such as benefit, penalty, cost, and risk (each rated on a 
+relative scale from a low of 1 to a high of 9).$>$
+
+\subsection{Stimulus/Response Sequences}
+$<$List the sequences of user actions and system responses that stimulate the 
+behavior defined for this feature. These will correspond to the dialog elements 
+associated with use cases.$>$
+
+\subsection{Functional Requirements}
+
+Temporary info to be revised: 
+
+Users can provide their network information using the application's interface.  This information will serve as configuration settings for the network that it will attempt to connect to. The user will also configure where they want their logs sent, and through what means. Some options may be through email or through an API provided by a service like Zenoss.  Although the application tests network access, it ultimately assumes that the user has access to the specified network.  If there is an initial connection error, logs will be stored locally until a connection is made, at which point it will send the logs via the specified means of communication.
+
+The application needs both internet and GPS connection to generate the desired logs and send them to the specified location.  The GPS will allow the logs to contain relevant geographical information, like where the device was when it attempted to connect, which allows the administrator to make a good guess as to which access point the user is connected to.
+
+The administrator will be able to set up a web address on their network that the application will attempt to connect to.  If the connection is unsuccessful, a log will be generated.  If it is successful, GNAT will download the file found on the web address.
+
+
+$<$Each requirement should be uniquely identified with a sequence number or a 
+meaningful tag of some kind.$>$
+
+REQ-1:REQ-2:
+
+\section{System Feature 2 (and so on)}
+
+
+\chapter{Other Nonfunctional Requirements}
+
+\section{Performance Requirements}
+$<$If there are performance requirements for the product under various 
+circumstances, state them here and explain their rationale, to help the 
+developers understand the intent and make suitable design choices. Specify the 
+timing relationships for real time systems. Make such requirements as specific 
+as possible. You may need to state performance requirements for individual 
+functional requirements or features.$>$
+
+\section{Safety Requirements}
+$<$Specify those requirements that are concerned with possible loss, damage, or 
+harm that could result from the use of the product. Define any safeguards or 
+actions that must be taken, as well as actions that must be prevented. Refer to 
+any external policies or regulations that state safety issues that affect the 
+product’s design or use. Define any safety certifications that must be 
+satisfied.$>$
+
+\section{Security Requirements}
+$<$Specify any requirements regarding security or privacy issues surrounding use 
+of the product or protection of the data used or created by the product. Define 
+any user identity authentication requirements. Refer to any external policies or 
+regulations containing security issues that affect the product. Define any 
+security or privacy certifications that must be satisfied.$>$
+
+\section{Software Quality Attributes}
+$<$Specify any additional quality characteristics for the product that will be 
+important to either the customers or the developers. Some to consider are: 
+adaptability, availability, correctness, flexibility, interoperability, 
+maintainability, portability, reliability, reusability, robustness, testability, 
+and usability. Write these to be specific, quantitative, and verifiable when 
+possible. At the least, clarify the relative preferences for various attributes, 
+such as ease of use over ease of learning.$>$
+
+\section{Business Rules}
+$<$List any operating principles about the product, such as which individuals or 
+roles can perform which functions under specific circumstances. These are not 
+functional requirements in themselves, but they may imply certain functional 
+requirements to enforce the rules.$>$
+
+
+\chapter{Other Requirements}
+$<$Define any other requirements not covered elsewhere in the SRS. This might 
+include database requirements, internationalization requirements, legal 
+requirements, reuse objectives for the project, and so on. Add any new sections 
+that are pertinent to the project.$>$
+
+\section{Appendix A: Glossary}
+%see https://en.wikibooks.org/wiki/LaTeX/Glossary
+$<$Define all the terms necessary to properly interpret the SRS, including 
+acronyms and abbreviations. You may wish to build a separate glossary that spans 
+multiple projects or the entire organization, and just include terms specific to 
+a single project in each SRS.$>$
+
+\section{Appendix B: Analysis Models}
+$<$Optionally, include any pertinent analysis models, such as data flow 
+diagrams, class diagrams, state-transition diagrams, or entity-relationship 
+diagrams.$>$
+
+\section{Appendix C: To Be Determined List}
+$<$Collect a numbered list of the TBD (to be determined) references that remain 
+in the SRS so they can be tracked to closure.$>$
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
