@@ -32,7 +32,7 @@
   urlcolor=purple,        % color of external links
   linktoc=page            % only page is linked
 }%
-\def\myversion{1.0 }
+\def\version{1.0}
 \def\sourcecode{https://github.com/MichaelVessia/gnat}
 \def\author{Michael Vessia Jr.}
 \date{}
@@ -51,7 +51,7 @@
     \vspace{1.9cm}
     General Network Access Tester\\
     \vspace{1.9cm}
-    \LARGE{Version \myversion}\\
+    \LARGE{Version \version}\\
     \vspace{1.9cm}
     Prepared by \author\\
     \vspace{1.9cm}
@@ -80,7 +80,7 @@
 
 \section{Purpose}
 
-General Network Access Tester is an Android application which helps IT departments, network administrators, or anyone that wants to monitor a network that they have access to. The application should be free to download on the Google Play store, and the application will be open source. General Network Access Tester is an Android application which tests network accessibility.  The application provides information that will make it easier for someone to troubleshoot their network.  The General Network Access Tester  reduces the workload on IT departments by allowing them to troubleshoot more quickly.
+General Network Access Tester is an Android application which helps IT departments, network administrators, or anyone that wants to monitor a network that they have access to. The application should be free to download on the Google Play store, and the application will be open source. The application provides information that will make it easier for someone to troubleshoot their network.  The application also reduces the workload on IT departments by allowing them to troubleshoot more quickly.
 
 This document is meant to give an overview of the features of the General Network Access Tester, making the process of using the application for one's own network simple, and making contributing to the project easy and painless.
 
@@ -88,21 +88,17 @@ This document is meant to give an overview of the features of the General Networ
 The General Network Access Tester will hereafter be referred to as GNAT. Users will be someone that interacts with the mobile application.  An administrator will be the person who owns the network and is likely having the logs sent to them.  The administrator can and likely will also be the user.
 
 \section{Intended Audience and Reading Suggestions}
-This document is meant for administrators who would like to have their network monitored by GNAT, or developers who would like to make contributions to GNAT. It is not required that users read this document, but if they would like further clarification about the settings they they are configuring within the application, they will find that information in this document.  Developers will be interested in the source code. As of version \myversion, the source code can be found at \sourcecode.
+This document is meant for administrators who would like to have their network monitored by GNAT, or developers who would like to make contributions to GNAT. It is not required that users read this document, but if they would like further clarification about the settings they they are configuring within the application, they will find that information in this document.  Developers will be interested in the source code. As of version \version, the source code can be found at \sourcecode.
 
 \section{Project Scope}
 
-None as of version \myversion.
-
-\section{References}
-
-None as of version \myversion.
+GNAT is targetting network administrators who have a considerable amount of mobile devices connecting to their network, and would like more information about failed connections. It should reduce the time an IT team needs to troubleshoot why people are unable to connect to their network.
 
 \chapter{Overall Description}
 
 \section{Product Perspective}
 
-GNAT is targetting network administrators who have a considerable amount of mobile devices connecting to their network, and would like more information about failed connections.  GNAT should integrate well into an existing monitoring/dashboard system, but ultimately should be a stand-alone application and not depend on any other software.
+GNAT should integrate well into an existing monitoring/dashboard system, but ultimately should be a stand-alone application and not depend on any other software.
 
 
 \section{Product Functions}
@@ -110,8 +106,6 @@ GNAT is targetting network administrators who have a considerable amount of mobi
 Within the mobile application, users will be able to enter a number of configuration options.  The network connection that will be attempted will be based upon these configuration options.  The result of this connection attempt will be logged if anything goes wrong. Although the application tests network access, it ultimately assumes that the user has access to the internet.  If there is an initial connection error, logs will be stored locally until a connection is made, at which point it will send the logs via the specified means of communication.
 
 The application needs both internet and GPS connection to generate the desired logs and send them to the specified location.  The GPS will allow the logs to contain relevant geographical information, like where the device was when it attempted to connect from.
-
-An administrator will be allowed to create a web page, likely containing some kind of file.  The app will attempt to connect to this web page.  The file will give the administrator some flexibility. GNAT can simply check if the file was able to be downloaded, or it can be a script that does something else.  
 
 If the administrator uses a dashboard service that has an API, GNAT will be able to send the logs via the API to be viewed in the dashboard service.
  
@@ -121,43 +115,28 @@ The user of the application is expected to either be the administrator, or be a 
 \section{Operating Environment}
 GNAT will run on the Android operating system.  The application will require the user to have at least Android 4.0.3 (Ice Cream Sandwich). It also assumes there is a network to be tested.
 
-\section{Design and Implementation Constraints}
-$<$Describe any items or issues that will limit the options available to the 
-developers. These might include: corporate or regulatory policies; hardware 
-limitations (timing requirements, memory requirements); interfaces to other 
-applications; specific technologies, tools, and databases to be used; parallel 
-operations; language requirements; communications protocols; security 
-considerations; design conventions or programming standards (for example, if the 
-customer’s organization will be responsible for maintaining the delivered 
-software).$>$
+Outside of the application, the administrator should feel free to create an internet facing web page, and place a file on that page.  The app will attempt to connect to this web page, based on the address the user enters in the configuration. GNAT can simply check if the file was able to be downloaded, or the file can be a script that does something else.  
 
-\section{User Documentation}
-$<$List the user documentation components (such as user manuals, on-line help, 
-and tutorials) that will be delivered along with the software. Identify any 
-known user documentation delivery formats or standards.$>$
+\section{Design and Implementation Constraints}
+
+\begin{itemize*}
+  \item GNAT will be accepting a network password as user input.  This should be handled appropriately.
+  \item GNAT will be able to connect to a third-party dashboard monitoring service like Zenoss, it should handle these credentials correctly as well.
+  \item GNAT will connect to the network using the HttpUrlConnection client, provided by the Android platform.
+\end{itemize*}
+
 \section{Assumptions and Dependencies}
 
-$<$List any assumed factors (as opposed to known facts) that could affect the 
-requirements stated in the SRS. These could include third-party or commercial 
-components that you plan to use, issues around the development or operating 
-environment, or constraints. The project could be affected if these assumptions 
-are incorrect, are not shared, or change. Also identify any dependencies the 
-project has on external factors, such as software components that you intend to 
-reuse from another project, unless they are already documented elsewhere (for 
-example, in the vision and scope document or the project plan).$>$
-
+\begin{itemize*}
+  \item If a user plans to use a third party monitoring system, they need to make sure they are credentialed to do so and that the service provides an API.  If the service has not yet been used with GNAT, a user should feel free to add their functionality to GNAT, and create a pull request at \sourcecode.
+  \item GNAT assumes the user knows the password to the network they are trying to test.  Failure to connect should be from other issues, not authentication.
+\end{itemize*}
 
 \chapter{External Interface Requirements}
 
 \section{User Interfaces}
-$<$Describe the logical characteristics of each interface between the software 
-product and the users. This may include sample screen images, any GUI standards 
-or product family style guides that are to be followed, screen layout 
-constraints, standard buttons and functions (e.g., help) that will appear on 
-every screen, keyboard shortcuts, error message display standards, and so on.  
-Define the software components for which a user interface is needed. Details of 
-the user interface design should be documented in a separate user interface 
-specification.$>$
+
+No UI as of \version.
 
 \section{Hardware Interfaces}
 $<$Describe the logical and physical characteristics of each interface between 
@@ -213,32 +192,12 @@ associated with use cases.$>$
 
 Temporary info to be revised: 
 
-
-$<$Each requirement should be uniquely identified with a sequence number or a 
-meaningful tag of some kind.$>$
-
-REQ-1:REQ-2:
+\subsubsection{Functional Requirement 1.1}
 
 \section{System Feature 2 (and so on)}
 
 
 \chapter{Other Nonfunctional Requirements}
-
-\section{Performance Requirements}
-$<$If there are performance requirements for the product under various 
-circumstances, state them here and explain their rationale, to help the 
-developers understand the intent and make suitable design choices. Specify the 
-timing relationships for real time systems. Make such requirements as specific 
-as possible. You may need to state performance requirements for individual 
-functional requirements or features.$>$
-
-\section{Safety Requirements}
-$<$Specify those requirements that are concerned with possible loss, damage, or 
-harm that could result from the use of the product. Define any safeguards or 
-actions that must be taken, as well as actions that must be prevented. Refer to 
-any external policies or regulations that state safety issues that affect the 
-product’s design or use. Define any safety certifications that must be 
-satisfied.$>$
 
 \section{Security Requirements}
 $<$Specify any requirements regarding security or privacy issues surrounding use 
@@ -256,32 +215,12 @@ and usability. Write these to be specific, quantitative, and verifiable when
 possible. At the least, clarify the relative preferences for various attributes, 
 such as ease of use over ease of learning.$>$
 
-\section{Business Rules}
-$<$List any operating principles about the product, such as which individuals or 
-roles can perform which functions under specific circumstances. These are not 
-functional requirements in themselves, but they may imply certain functional 
-requirements to enforce the rules.$>$
-
-
-\chapter{Other Requirements}
-$<$Define any other requirements not covered elsewhere in the SRS. This might 
-include database requirements, internationalization requirements, legal 
-requirements, reuse objectives for the project, and so on. Add any new sections 
-that are pertinent to the project.$>$
-
 \section{Appendix A: Glossary}
-%see https://en.wikibooks.org/wiki/LaTeX/Glossary
-$<$Define all the terms necessary to properly interpret the SRS, including 
-acronyms and abbreviations. You may wish to build a separate glossary that spans 
-multiple projects or the entire organization, and just include terms specific to 
-a single project in each SRS.$>$
+\begin{itemize*}
+    GNAT - General Network Access Tester
+\end{itemize*}
 
-\section{Appendix B: Analysis Models}
-$<$Optionally, include any pertinent analysis models, such as data flow 
-diagrams, class diagrams, state-transition diagrams, or entity-relationship 
-diagrams.$>$
-
-\section{Appendix C: To Be Determined List}
+\section{Appendix B: To Be Determined List}
 $<$Collect a numbered list of the TBD (to be determined) references that remain 
 in the SRS so they can be tracked to closure.$>$
 
