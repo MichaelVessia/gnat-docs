@@ -109,7 +109,7 @@ Within the mobile application, users will be able to enter a number of configura
 
 The application needs internet connection to generate the desired logs and to store them at the specified location. GPS connectivity will allow the logs to contain relevant geographical information, like where the device was when it attempted to connect from, but is not necessary for the application.
 
-If the administrator uses a dashboard service that has an API, the administrator can take the logs from the server and send them via the API to be viewed in the dashboard service. The Android application will have no interaction with 3rd party APIs.
+If the administrator uses a dashboard service that has an API, the administrator can take the logs from the server and send them via the API to be viewed in the dashboard service. The Android application will have no interaction with third party APIs.
  
 \section{User Classes and Characteristics}
 The user of the application is expected to either be the administrator, or be a knowledgeable user that recieved the relevant information from the administator.  End users of the network should not have to interact with GNAT, but assuming they had the relevant information nothing would be stopping them.
@@ -179,21 +179,38 @@ If there is no web page to connect to, then we can only monitor connection failu
 
 \subsection{Stimulus/Response Sequences}
 
-\begin{itemize}
+\begin{enumerate}
   \item User enters configuration
   \item User connects to the network
   \item GNAT attempts to access configured web page
   \item Log file is generated
-\end{itemize}
+\end{enumerate}
 
 \subsection{Functional Requirements}
 
-\begin{itemize}
+\begin{enumerate}
   \item Log files are stored on the server
   \item Log files should be sent through an API to the IT monitoring software if it is provided
   \item If a network connection is unable to be established, log files should be stored locally
-\end{itemize}
+\end{enumerate}
 
+\section{Integration With Third Party Monitoring Systems}
+
+\subsection{Description and Priority}
+
+Priority: Low
+
+The administrator may not have a monitoring system, and if they do the logs are still functional without it.
+
+\subsection{Stimulus/Response Sequences}
+
+\begin{enumerate}
+\item Administrator has server configured, with logs being stored there
+\item Administrator has a third party monitoring service with an API that accepts log's format
+  \item Administrator can use the API to send logs to the monitoring system
+
+  \end{enumerate}
+\subsection{Functional Requirements}
 
 
 \chapter{Other Nonfunctional Requirements}
@@ -205,18 +222,15 @@ Connections to the server will be made over HTTPS when possible.
 \section{Software Quality Attributes}
 One of GNAT's key goals is to be useful to anyone, regardless of their network configuration or external software that they use.  For this reason, it is necessary that it remain open source so that if someone wants to make it useable for their system, they can implement the necessary changes to do so.
 
-\section{Appendix A: Glossary}
-\begin{itemize}
-  \item GNAT --- General Network Access Tester
-  \item HTTP --- Hypertext Transfer Protocol
-  \item API --- Application Program Interface
-  \item JSON --- JavaScript Object Notation
-  \item XML --- eXtensible Markup Language
-  \item app --- Application
-    \item OS --- Operating System
-\end{itemize}
-
-
+\section{Appendix A:\@ Glossary}
+ GNAT --- General Network Access Tester\\
+ HTTP --- Hypertext Transfer Protocol\\
+ HTTPS --- Hypertext Transfer Protocol Secure\\
+ API --- Application Program Interface\\
+ JSON --- JavaScript Object Notation\\
+ XML --- eXtensible Markup Language\\
+ app --- Application\\
+ OS --- Operating System\\
 \end{document}
 
 
