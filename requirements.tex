@@ -84,29 +84,32 @@ General Network Access Tester is an Android application which helps IT departmen
 This document is meant to give an overview of the features of the General Network Access Tester, making the process of using the application for one's own network simple, and making contributing to the project easy and painless.
 
 \section{Document Conventions}
-The General Network Access Tester will hereafter be referred to as GNAT. Users will be someone that interacts with the mobile application.  An administrator will be the person who owns the network and is likely having the logs sent to them.  The administrator can and likely will also be the user.
+The General Network Access Tester will hereafter be referred to as GNAT\@. Users will be someone that interacts with the mobile application.  An administrator will be the person who owns the network and is likely having the logs sent to them.  The administrator can and likely will also be the user.
 
 \section{Intended Audience and Reading Suggestions}
-This document is meant for administrators who would like to have their network monitored by GNAT, or developers who would like to make contributions to GNAT. It is not required that users read this document, but if they would like further clarification about the settings they they are configuring within the application, they will find that information in this document.  Developers will be interested in the source code. As of version \version, the source code can be found at \sourcecode.
+This document is meant for administrators who would like to have their network monitored by GNAT, or developers who would like to make contributions to GNAT\@. It is not required that users read this document, but if they would like further clarification about the settings they they are configuring within the application, they will find that information in this document.  Developers will be interested in the source code. As of version \version, the source code can be found at \sourcecode.
 
 \section{Project Scope}
 
-GNAT is targetting network administrators who have a considerable amount of mobile devices connecting to their network, and would like more information about failed connections. It should reduce the time an IT team needs to troubleshoot why people are unable to connect to their network.
+GNAT is targetting network administrators who have mobile devices connecting to their network and would like more information about connection attempts, connection drops, and other network issues. It should reduce the time an IT team needs to troubleshoot why people are unable to connect to their network.
 
 \chapter{Overall Description}
 
 \section{Product Perspective}
 
-GNAT should integrate well into an existing monitoring/dashboard system, but ultimately should be a stand-alone application and not depend on any other software.
+GNAT will work as a stand-alone application, although with limited functionality.  Ideally, the administrator will have a server set up with an accessible web page. This web page should contain some kind of resource, such as a script that is able to extract more information from the connection attempt and store it on the server.
+
+
+GNAT's output log files should integrate well into an existing monitoring/dashboard system, but this is not required for the application to function.
 
 
 \section{Product Functions}
 
-Within the mobile application, users will be able to enter a number of configuration options.  The network connection that will be attempted will be based upon these configuration options.  The result of this connection attempt will be logged if anything goes wrong. Although the application tests network access, it ultimately assumes that the user has access to the internet.  If there is an initial connection error, logs will be stored locally until a connection is made, at which point it will send the logs via the specified means of communication.
+Within the mobile application, users will be able to enter a number of configuration options.  The network connection that will be attempted will be based upon these configuration options.  The result of this connection attempt will be logged locally on the device if anything goes wrong. Although the application tests network access, it ultimately assumes that the user has access to the internet.  If there is an initial connection error, logs will be stored locally until a connection is made, at which point it will store logs on the server that the administrator has configured, with local backups.
 
-The application needs both internet and GPS connection to generate the desired logs and send them to the specified location.  The GPS will allow the logs to contain relevant geographical information, like where the device was when it attempted to connect from.
+The application needs internet connection to generate the desired logs and to store them at the specified location. GPS connectivity will allow the logs to contain relevant geographical information, like where the device was when it attempted to connect from, but is not necessary for the application.
 
-If the administrator uses a dashboard service that has an API, GNAT will be able to send the logs via the API to be viewed in the dashboard service.
+If the administrator uses a dashboard service that has an API, the administrator can take the logs from the server and send them via the API to be viewed in the dashboard service. The Android application will have no interaction with 3rd party APIs.
  
 \section{User Classes and Characteristics}
 The user of the application is expected to either be the administrator, or be a knowledgeable user that recieved the relevant information from the administator.  End users of the network should not have to interact with GNAT, but assuming they had the relevant information nothing would be stopping them.
@@ -114,20 +117,18 @@ The user of the application is expected to either be the administrator, or be a 
 \section{Operating Environment}
 GNAT will run on the Android operating system.  The application will require the user to have at least Android 4.0.3 (Ice Cream Sandwich). It also assumes there is a network to be tested.
 
-Outside of the application, the administrator should feel free to create an internet facing web page, and place a file on that page.  The app will attempt to connect to this web page, based on the address the user enters in the configuration. GNAT can simply check if the file was able to be downloaded, or the file can be a script that does something else.  
+Outside of the application, the administrator should feel free to create an internet facing web page, and place a file on that page.  The app will attempt to connect to this web page, based on the address the user enters in the configuration. GNAT can simply check if the file was able to be downloaded, or the file can be a script that does something else and stores more detailed logs on the server.
 
 \section{Design and Implementation Constraints}
 
 \begin{itemize}
-  \item GNAT will be accepting a network password as user input.  This should be handled appropriately.
-  \item GNAT will be able to connect to a third-party dashboard monitoring service like Zenoss, it should handle these credentials correctly as well.
-  \item GNAT will connect to the network using the HttpUrlConnection client, provided by the Android platform.
+  \item GNAT will connect to the network using the HttpUrlConnection client, provided by the Android platform. Passwords will be handled by the OS, not by GNAT\@.
 \end{itemize}
 
 \section{Assumptions and Dependencies}
 
 \begin{itemize}
-  \item If a user plans to use a third party monitoring system, they need to make sure they are credentialed to do so and that the service provides an API.  If the service has not yet been used with GNAT, a user should feel free to add their functionality to GNAT, and create a pull request at \sourcecode.
+  \item If a user plans to use a third party monitoring system, they need to make sure they are credentialed to do so and that the service provides an API\@. If the service has not yet been used with GNAT, a user should feel free to add their anonymized script to the repository, and create a pull request at \sourcecode.
   \item GNAT assumes the user knows the password to the network they are trying to test.  Failure to connect should be from other issues, not authentication.
 \end{itemize}
 
@@ -138,11 +139,11 @@ Outside of the application, the administrator should feel free to create an inte
 No UI as of \version.
 
 \section{Software Interfaces}
-GNAT will be able to make use of third party IT monitoring systems.  The communication between GNAT and the external software will likely be dependent on the particular software.  As of \version there are no such integrated components.
+GNAT will be able to make use of third party IT monitoring systems on the server side.  There will be no communication between the Android app and the external software. All such communication should be done on the server.As of \version there are no such integrated components.
 
 \section{Communications Interfaces}
 
-GNAT will connect to the network using the HttpUrlConnection client, provided by the Android platform. It will send messages through API's likely using JSON or XML, and can send log files to servers using HTTP.
+GNAT will connect to the network using the HttpUrlConnection client, provided by the Android platform. It will send messages through APIs likely using JSON or XML, and can send log files to servers using HTTP\@.
 
 \chapter{System Features}
 
@@ -165,32 +166,31 @@ Necessary for the desired purpose of the application.  Without the log files, GN
 \subsection{Functional Requirements}
 
 \begin{itemize}
-  \item Log Files should be in a JSON or XML if at all possible, to make the integration with API's easier in the future.
+  \item Log Files should be in a JSON or XML if at all possible, to make the integration with APIs easier in the future.
 \end{itemize}
 
-\section{Sending Log Files to Administrator}
+\section{Connection to Administrator's Server}
 
 \subsection{Description and Priority}
 
 Priority: High
 
-If log files can only be stored locally and not sent to the administrator, then GNAT's use is limited.
+If there is no web page to connect to, then we can only monitor connection failure and nothing beyond that. Having a server with a web page allows us to offload log storage onto the server as well.
 
 \subsection{Stimulus/Response Sequences}
 
 \begin{itemize}
   \item User enters configuration
   \item User connects to the network
-  \item Some error occurs when attempting to visit web page or download resource from web page
-  \item Log file is Generated
-  \item Log file is sent to administrator based on configuration
+  \item GNAT attempts to access configured web page
+  \item Log file is generated
 \end{itemize}
 
 \subsection{Functional Requirements}
 
 \begin{itemize}
+  \item Log files are stored on the server
   \item Log files should be sent through an API to the IT monitoring software if it is provided
-  \item Log files should also be sent directly to the admin's server via HTTP for backups if they configure GNAT to do so
   \item If a network connection is unable to be established, log files should be stored locally
 \end{itemize}
 
@@ -200,20 +200,20 @@ If log files can only be stored locally and not sent to the administrator, then 
 
 \section{Security Requirements}
 
-Security concerns are mostly related to the proper storage and communication of network passwords and API keys.  Measures will be taken to make sure that these are secure.  Connections to send log files will be made over HTTPS when possible as well.
+Connections to the server will be made over HTTPS when possible.
 
 \section{Software Quality Attributes}
 One of GNAT's key goals is to be useful to anyone, regardless of their network configuration or external software that they use.  For this reason, it is necessary that it remain open source so that if someone wants to make it useable for their system, they can implement the necessary changes to do so.
 
 \section{Appendix A: Glossary}
 \begin{itemize}
-  \item GNAT - General Network Access Tester
-  \item HTTP - Hypertext Transfer Protocol
-  \item API - Application Program Interface
-  \item JSON - JavaScript Object Notation
-  \item XML - eXtensible Markup Language
-  \item app - Application
-
+  \item GNAT --- General Network Access Tester
+  \item HTTP --- Hypertext Transfer Protocol
+  \item API --- Application Program Interface
+  \item JSON --- JavaScript Object Notation
+  \item XML --- eXtensible Markup Language
+  \item app --- Application
+    \item OS --- Operating System
 \end{itemize}
 
 
