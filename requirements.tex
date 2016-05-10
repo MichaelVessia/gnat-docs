@@ -21,6 +21,7 @@
 \usepackage[bookmarks=true]{hyperref}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
+\usepackage[pdftex]{graphicx}
 \hypersetup{ bookmarks=false,    % show bookmarks bar?  pdftitle={Software Requirement Specification},    % title
   pdfauthor={Michael Vessia Jr.},                     % author
   pdfsubject={Requirements for GNAT},                        % subject of the document
@@ -34,6 +35,7 @@
 }%
 \def\version{1.0}
 \def\sourcecode{https://github.com/MichaelVessia/gnat}
+\def\railssource{https://github.com/MichaelVessia/gnat-rails}
 \def\author{Michael Vessia Jr.}
 \date{}
 %\title{%
@@ -61,20 +63,6 @@
 
 \tableofcontents
 
-\chapter*{Revision History}
-
-\begin{center}
-  \begin{tabular}{|c|c|c|c|}
-    \hline
-    Name & Date & Reason For Changes & Version\\
-    \hline
-    21 & 22 & 23 & 24\\
-    \hline
-    31 & 32 & 33 & 34\\
-    \hline
-  \end{tabular}
-\end{center}
-
 \chapter{Introduction}
 
 \section{Purpose}
@@ -97,19 +85,19 @@ GNAT is targetting network administrators who have mobile devices connecting to 
 
 \section{Product Perspective}
 
-GNAT will work as a stand-alone application, although with limited functionality.  Ideally, the administrator will have a server set up with an accessible web page. This web page should contain some kind of resource, such as a script that is able to extract more information from the connection attempt and store it on the server.
-
+GNAT should integrate well with third party software as the logs are in JSON format, but ultimately should be a stand-alone application and not depend on any other software. More functionality is unlocked if the administrator has a server that accepts JSON POST requests.
 
 GNAT's output log files should integrate well into an existing monitoring/dashboard system, but this is not required for the application to function.
 
 
 \section{Product Functions}
 
-Within the mobile application, users will be able to enter a number of configuration options.  The network connection that will be attempted will be based upon these configuration options.  The result of this connection attempt will be logged locally on the device if anything goes wrong. Although the application tests network access, it ultimately assumes that the user has access to the internet.  If there is an initial connection error, logs will be stored locally until a connection is made, at which point it will store logs on the server that the administrator has configured, with local backups.
 
-The application needs internet connection to generate the desired logs and to store them at the specified location. GPS connectivity will allow the logs to contain relevant geographical information, like where the device was when it attempted to connect from, but is not necessary for the application.
+Within the mobile application, users will be able to enter a number of configuration options that will affect what kind of logs are generated. The connection info will be logged in the background at a user specified interval. Although the application tests network access, it ultimately assumes that the user has access to the internet.  If there is no wifi network to connect to, functionality will be extremely limited.
 
-If the administrator uses a dashboard service that has an API, the administrator can take the logs from the server and send them via the API to be viewed in the dashboard service. The Android application will have no interaction with third party APIs.
+The application needs internet (WIFI) to generate the desired logs and send them to the server. 
+
+If the administrator uses a dashboard service that has an API, it should accept JSON POST requests, and they can enter the url into GNAT's settings.  If it does not, they are responsible for creating some kind of web service that can act as a middle man.
 
 \section{User Classes and Characteristics}
 The user of the application is expected to either be the administrator, or be a knowledgeable user that recieved the relevant information from the administator.  End users of the network should not have to interact with GNAT, but assuming they had the relevant information nothing would be stopping them.
@@ -122,7 +110,8 @@ Outside of the application, the administrator should feel free to create an inte
 \section{Design and Implementation Constraints}
 
 \begin{itemize}
-\item GNAT will connect to the network using the HttpUrlConnection client, provided by the Android platform. Passwords will be handled by the OS, not by GNAT\@.
+\item GNAT will write JSON logs to local device storage, there should be room on the device. It will not delete any old logs, this is up to the user.
+  \item GNAT will send POST requests to the server specified.  This server needs to be properly configured and must exist.
 \end{itemize}
 
 \section{Assumptions and Dependencies}
@@ -136,14 +125,19 @@ Outside of the application, the administrator should feel free to create an inte
 
 \section{User Interfaces}
 
-No UI as of \version.
+\begin{center}
+  \includegraphics[scale=0.3]{mainActivity.jpg}
+
+  \includegraphics[scale=0.3]{settings.jpg}
+  \end{center}
 
 \section{Software Interfaces}
-GNAT will be able to make use of third party IT monitoring systems on the server side.  There will be no communication between the Android app and the external software. All such communication should be done on the server.As of \version there are no such integrated components.
+
+A sample web app for companion use with GNAT exists at \railssource.  It was built with Ruby on Rails and PostgreSQL.  Administrators should feel free to create their own using their own server/technology stack.
 
 \section{Communications Interfaces}
 
-GNAT will connect to the network using the HttpUrlConnection client, provided by the Android platform. It will send messages through APIs likely using JSON or XML, and can send log files to servers using HTTP\@.
+Logs are sent via HTTP POST request using the application/json header.
 
 \chapter{System Features}
 
@@ -157,16 +151,15 @@ Necessary for the desired purpose of the application.  Without the log files, GN
 
 \subsection{Stimulus/Response Sequences}
 \begin{enumerate}
-\item User enters configuration
 \item User connects to the network
-\item Some error occurs when attempting to visit web page or download resource from web page
-\item Log file is generated
+\item User enters configuration, enables logging
+\item Log file is generated at specified interval
 \end{enumerate}
 
 \subsection{Functional Requirements}
 
 \begin{itemize}
-\item Log Files should be in a JSON, XML, or RSS (undecided as of version \version), to make the integration with APIs easier in the future.
+\item Log Files should be in JSON format to make the integration with APIs easier in the future.
 \end{itemize}
 
 \section{Connection to Administrator's Server}
@@ -180,10 +173,9 @@ If there is no web page to connect to, then we can only monitor connection failu
 \subsection{Stimulus/Response Sequences}
 
 \begin{enumerate}
-\item User enters configuration
-\item User connects to the network
-\item GNAT attempts to access configured web page
-\item Log file is generated
+  \item User enters appropriate configuration options and begins logging.
+\item JSON object is generated containing log information.
+  \item HTTP POST request is made to server.
 \end{enumerate}
 
 \subsection{Functional Requirements}
@@ -193,38 +185,6 @@ If there is no web page to connect to, then we can only monitor connection failu
 \item Log files should be sent through an API to the IT monitoring software if it is provided
 \item If a network connection is unable to be established, log files should be stored locally
 \end{itemize}
-
-\section{Integration With Third Party Monitoring Systems}
-
-\subsection{Description and Priority}
-
-Priority: Low
-
-The administrator may not have a monitoring system, and if they do the logs are still functional without it.
-
-\subsection{Stimulus/Response Sequences}
-
-\begin{enumerate}
-\item User enters configuration
-\item User connects to the network
-\item GNAT attempts to access configured web page
-\item Log file is generated
-\item Log file is sent via API to the monitoring system
-\end{enumerate}
-
-\subsection{Functional Requirements}
-
-\begin{itemize}
-\item Administrator has server configured, with logs being stored there
-\item Administrator has a third party monitoring service with an API that accepts log format
-\item Administrator can use the API to send logs to the monitoring system
-\end{itemize}
-
-\chapter{Other Nonfunctional Requirements}
-
-\section{Security Requirements}
-
-Connections to the server will be made over HTTPS when possible.
 
 \section{Software Quality Attributes}
 One of GNAT's key goals is to be useful to anyone, regardless of their network configuration or external software that they use.  For this reason, it is necessary that it remain open source so that if someone wants to make it useable for their system, they can implement the necessary changes to do so.
